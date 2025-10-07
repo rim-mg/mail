@@ -330,8 +330,6 @@ services:
           ipv4_address: ${IPV4_NETWORK:-172.22.1}.250
           aliases:
             - dovecot
-        mailcow_macvlan:
-          ipv4_address: 51.83.61.240
 
     postfix-mailcow:
       image: ghcr.io/mailcow/postfix:1.81
@@ -365,14 +363,12 @@ services:
         - NET_BIND_SERVICE
       restart: always
       dns:
-        - ${IPV4_NETWORK:-172.22.1}.254        
+        - ${IPV4_NETWORK:-172.22.1}.254
       networks:
         mailcow-network:
           ipv4_address: ${IPV4_NETWORK:-172.22.1}.253
           aliases:
             - postfix
-        mailcow_macvlan:
-          ipv4_address: 51.83.61.240
 
     postfix-tlspol-mailcow:
       image: ghcr.io/mailcow/postfix-tlspol:1.0
@@ -653,12 +649,11 @@ networks:
     driver: bridge
     driver_opts:
       com.docker.network.bridge.name: br-mailcow
-    enable_ipv6: ${ENABLE_IPV6:-true}
+    enable_ipv6: false
     ipam:
       driver: default
       config:
         - subnet: ${IPV4_NETWORK:-172.22.1}.0/24
-        - subnet: ${IPV6_NETWORK:-fd4d:6169:6c63:6f77::/64}
   mailcow_macvlan:
     external: true
 
