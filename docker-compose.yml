@@ -259,6 +259,10 @@ services:
         - redis-mailcow
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
+      networks:
+        mailcow-network: # This is the internal network, it must stay!
+        mailcow_macvlan:
+          ipv4_address: 51.83.61.240
       cap_add:
         - NET_BIND_SERVICE
       volumes:
@@ -365,6 +369,10 @@ services:
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       networks:
+        mailcow-network: # This is the internal network, it must stay!
+        mailcow_macvlan:
+          ipv4_address: 51.83.61.240
+      networks:
         mailcow-network:
           ipv4_address: ${IPV4_NETWORK:-172.22.1}.253
           aliases:
@@ -411,6 +419,10 @@ services:
       image: ghcr.io/mailcow/nginx:1.05
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
+      networks:
+        mailcow-network: # This is the internal network, it must stay!
+        mailcow_macvlan:
+          ipv4_address: 51.83.61.240
       environment:
         - HTTPS_PORT=${HTTPS_PORT:-443}
         - HTTP_PORT=${HTTP_PORT:-80}
@@ -653,6 +665,8 @@ networks:
       config:
         - subnet: ${IPV4_NETWORK:-172.22.1}.0/24
         - subnet: ${IPV6_NETWORK:-fd4d:6169:6c63:6f77::/64}
+  mailcow_macvlan:
+    external: true
 
 volumes:
   vmail-vol-1:
